@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="study.singlelife">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Studysinglelife">
-        <activity android:name=".contentslist.ContentListActivity"></activity>
+        <activity android:name=".contentslist.ContentShowActivity"></activity>
+        <activity android:name=".contentslist.ContentListActivity" />
         <activity android:name=".auth.JoinActivity" />
         <activity android:name=".auth.LoginActivity" />
         <activity android:name=".auth.IntroActivity" />
