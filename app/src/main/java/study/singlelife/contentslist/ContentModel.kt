@@ -1,7 +1,8 @@
 package study.singlelife.contentslist
 
 data class ContentModel(
-    var title : String,
-    var imageUrl : String,
-    var webUrl : String
+    var title : String = "",
+    var imageUrl : String = "",
+    var webUrl : String = ""
+
 )
