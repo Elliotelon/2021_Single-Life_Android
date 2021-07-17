@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Studysinglelife">
-        <activity android:name=".board.BoardEditActivity"></activity>
+        <activity android:name=".setting.SettingActivity"></activity>
+        <activity android:name=".board.BoardEditActivity" />
         <activity android:name=".board.BoardInsideActivity" />
         <activity android:name=".board.BoardWriteActivity" />
         <activity android:name=".contentslist.ContentShowActivity" />
