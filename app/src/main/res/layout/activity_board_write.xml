@@ -64,6 +64,7 @@
                     android:layout_marginHorizontal="20dp"/>
 
                 <ImageView
+                    android:id="@+id/imageArea"
                     android:layout_marginTop="20dp"
                     android:src="@drawable/plusbtn"
                     android:layout_width="match_parent"
