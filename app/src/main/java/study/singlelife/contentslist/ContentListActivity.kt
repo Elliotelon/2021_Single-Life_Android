@@ -16,18 +16,24 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import study.singlelife.R
+import study.singlelife.utils.FBAuth
+import study.singlelife.utils.FBRef
 
 class ContentListActivity : AppCompatActivity() {
 
     lateinit var myRef : DatabaseReference
+
+    val bookmarkIdList = mutableListOf<String>()
+
+    lateinit var rvAdapter: ContentRVAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_content_list)
 
         val items = ArrayList<ContentModel>()
-
-        val rvAdapter = ContentRVAdapter(baseContext, items)
+        val itemKeyList = ArrayList<String>()
+        rvAdapter = ContentRVAdapter(baseContext, items, itemKeyList, bookmarkIdList)
 
         val database = Firebase.database
 
@@ -39,15 +45,17 @@ class ContentListActivity : AppCompatActivity() {
             myRef = database.getReference("contents2")
         }
 
-
+        //firebase 데이터 가져오기
         val postListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                 for(dataModel in dataSnapshot.children){
                     Log.d("ContentListActivity", dataModel.toString())
+                    Log.d("ContentListActivity", dataModel.key.toString())
                     val item = dataModel.getValue(ContentModel::class.java)
 
                     items.add(item!!)
+                    itemKeyList.add(dataModel.key.toString())
                 }
                 rvAdapter.notifyDataSetChanged()
                 Log.d("ContentListActivity", items.toString())
@@ -100,16 +108,29 @@ class ContentListActivity : AppCompatActivity() {
 
         rv.layoutManager = GridLayoutManager(this, 2)
 
-        rvAdapter.itemClick = object : ContentRVAdapter.ItemClick {
-            override fun onClick(view: View, position: Int) {
+        getBookmarkData()
+    }
 
-                Toast.makeText(baseContext, items[position].title, Toast.LENGTH_SHORT).show()
+    private fun getBookmarkData(){
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                val intent = Intent(this@ContentListActivity, ContentShowActivity::class.java)
-                intent.putExtra("url", items[position].webUrl)
-                startActivity(intent)
+                for(dataModel in dataSnapshot.children){
+
+                    Log.d("getBookmarkData", dataModel.key.toString())
+                    Log.d("getBookmarkData", dataModel.toString())
+
+                    bookmarkIdList.add(dataModel.key.toString())
+                }
+                Log.d("ContentListActivity1", bookmarkIdList.toString())
+                rvAdapter.notifyDataSetChanged()
             }
 
+            override fun onCancelled(databaseError: DatabaseError) {
+
+                Log.w("ContentListActivity", "loadPost:onCancelled", databaseError.toException())
+            }
         }
+        FBRef.bookmarkRef.child(FBAuth.getUid()).addValueEventListener(postListener)
     }
 }
