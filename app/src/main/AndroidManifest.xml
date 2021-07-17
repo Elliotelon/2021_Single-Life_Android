@@ -3,7 +3,7 @@
     package="study.singlelife">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Studysinglelife">
-        <activity android:name=".board.BoardInsideActivity"></activity>
+        <activity android:name=".board.BoardEditActivity"></activity>
+        <activity android:name=".board.BoardInsideActivity" />
         <activity android:name=".board.BoardWriteActivity" />
         <activity android:name=".contentslist.ContentShowActivity" />
         <activity android:name=".contentslist.ContentListActivity" />
