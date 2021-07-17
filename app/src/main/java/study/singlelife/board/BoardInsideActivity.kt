@@ -4,8 +4,11 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.google.firebase.database.DataSnapshot
@@ -23,9 +26,15 @@ class BoardInsideActivity : AppCompatActivity() {
 
     private lateinit var binding :ActivityBoardInsideBinding
 
+    private lateinit var  key : String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_board_inside)
+
+        binding.boardSettingIcon.setOnClickListener {
+            showDialog()
+        }
 
         //첫번째 방법
 //        val title = intent.getStringExtra("title").toString()
@@ -38,10 +47,31 @@ class BoardInsideActivity : AppCompatActivity() {
 
         //두번째 방법
 
-        val key = intent.getStringExtra("key").toString()
+        key = intent.getStringExtra("key").toString()
         //Toast.makeText(this, key, Toast.LENGTH_SHORT).show()
         getBoardData(key)
         getImageData(key)
+    }
+
+    private fun showDialog(){
+        val mDialogView = LayoutInflater.from(this).inflate(R.layout.custom_dialog, null)
+        val mBuilder = AlertDialog.Builder(this)
+            .setView(mDialogView)
+            .setTitle("게시글 수정/삭제")
+
+        val alertDialog = mBuilder.show()
+        //수정버튼을 눌렀을때
+        alertDialog.findViewById<Button>(R.id.editBtn)?.setOnClickListener {
+            Toast.makeText(this, "aa", Toast.LENGTH_SHORT).show()
+        }
+
+        //삭제버튼을 눌렀을때
+        alertDialog.findViewById<Button>(R.id.removeBtn)?.setOnClickListener {
+            FBRef.boardRef.child(key).removeValue()
+            Toast.makeText(this, "삭제완료", Toast.LENGTH_SHORT).show()
+            finish()
+
+        }
     }
 
     private fun getImageData(key: String) {
