@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Studysinglelife">
-        <activity android:name=".board.BoardWriteActivity"></activity>
+        <activity android:name=".board.BoardInsideActivity"></activity>
+        <activity android:name=".board.BoardWriteActivity" />
         <activity android:name=".contentslist.ContentShowActivity" />
         <activity android:name=".contentslist.ContentListActivity" />
         <activity android:name=".auth.JoinActivity" />
