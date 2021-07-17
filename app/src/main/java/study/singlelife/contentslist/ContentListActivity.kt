@@ -111,6 +111,7 @@ class ContentListActivity : AppCompatActivity() {
         getBookmarkData()
     }
 
+    //사용자가 북마크한 데이터
     private fun getBookmarkData(){
         val postListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
