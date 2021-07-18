@@ -26,6 +26,8 @@ class StoreFragment : Fragment() {
         val webView = view.findViewById<WebView>(R.id.storeWebView)
         webView.loadUrl("https://www.coupang.com")
 
+
+
         return view
     }
 
