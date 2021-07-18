@@ -18,6 +18,8 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import study.singlelife.R
+import study.singlelife.comment.CommentLVAdapter
+import study.singlelife.comment.CommentModel
 import study.singlelife.databinding.ActivityBoardInsideBinding
 import study.singlelife.utils.FBAuth
 import study.singlelife.utils.FBRef
@@ -29,6 +31,10 @@ class BoardInsideActivity : AppCompatActivity() {
     private lateinit var binding :ActivityBoardInsideBinding
 
     private lateinit var  key : String
+
+    private val commentDataList = mutableListOf<CommentModel>()
+
+    private lateinit var commentAdapter : CommentLVAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +59,64 @@ class BoardInsideActivity : AppCompatActivity() {
         //Toast.makeText(this, key, Toast.LENGTH_SHORT).show()
         getBoardData(key)
         getImageData(key)
+
+        binding.commentBtn.setOnClickListener {
+            insertComment(key)
+        }
+
+        getCommentData(key)
+
+        commentAdapter = CommentLVAdapter(commentDataList)
+        binding.commentLV.adapter = commentAdapter
+
+
+    }
+
+    private fun getCommentData(key : String){
+
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                commentDataList.clear()
+
+                for(dataModel in dataSnapshot.children){
+
+                    val item = dataModel.getValue(CommentModel::class.java)
+                    commentDataList.add(item!!)
+                }
+
+                commentAdapter.notifyDataSetChanged()
+
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+            }
+        }
+        FBRef.comentRef.child(key).addValueEventListener(postListener)
+    }
+
+    private fun insertComment(key : String){
+        //comment
+        //    -BoardKey
+        //        - CommentKey
+        //              - CommentData
+
+        FBRef.comentRef
+            .child(key)
+            .push()
+            .setValue(
+                CommentModel(
+                    binding.commentArea.text.toString(),
+                    FBAuth.getTime()
+            )
+        )
+
+        Toast.makeText(this, "댓글 입력완료", Toast.LENGTH_SHORT).show()
+
+        binding.commentArea.setText("")
+
     }
 
     private fun showDialog(){
@@ -92,7 +156,7 @@ class BoardInsideActivity : AppCompatActivity() {
                     .load(task.result)
                     .into(imageView)
             } else {
-
+                binding.getImageArea.isVisible = false
             }
         }
     }
