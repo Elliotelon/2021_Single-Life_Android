@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.google.firebase.database.DataSnapshot
@@ -18,6 +19,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import study.singlelife.R
 import study.singlelife.databinding.ActivityBoardInsideBinding
+import study.singlelife.utils.FBAuth
 import study.singlelife.utils.FBRef
 
 class BoardInsideActivity : AppCompatActivity() {
@@ -108,6 +110,16 @@ class BoardInsideActivity : AppCompatActivity() {
                 binding.titleArea.text = dataModel?.title
                 binding.contentArea.text = dataModel?.content
                 binding.timeArea.text = dataModel?.time
+
+                val myUid = FBAuth.getUid()
+                val writeUid = dataModel?.uid
+
+                if(myUid == writeUid){
+                    binding.boardSettingIcon.isVisible = true
+                }else {
+                    Toast.makeText(baseContext, "내가 글쓴이 아님", Toast.LENGTH_SHORT).show()
+
+                }
 
             }
 
